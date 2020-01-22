@@ -4,7 +4,7 @@ class ItemFilterWidget extends StatelessWidget {
   final bool _selected;
   final String _brand;
 
-  ItemFilterWidget(this._selected, this._brand);
+  ItemFilterWidget(this._brand, this._selected);
 
   @override
   Widget build(BuildContext context) {
