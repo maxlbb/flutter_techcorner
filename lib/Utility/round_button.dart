@@ -4,16 +4,17 @@ class RoundButton extends StatelessWidget {
   final double width;
   final double height;
   final IconData icon;
+  final Color backgroundColor;
 
-  RoundButton(this.width, this.height, this.icon);
+  RoundButton(this.width, this.height, this.icon,this.backgroundColor);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return buildRoundButton(this.width, this.height, icon);
+    return buildRoundButton(this.width, this.height, icon,this.backgroundColor);
   }
 
-  Padding buildRoundButton(double width, double height, IconData icon) {
+  Padding buildRoundButton(double width, double height, IconData icon, Color backgroundColor) {
     return Padding(
         padding: EdgeInsets.only(right: 10.0),
         child: Container(
@@ -27,7 +28,19 @@ class RoundButton extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.grey,
+              color: backgroundColor,
+              boxShadow:[
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 15.0, // has the effect of softening the shadow
+                  spreadRadius: -3.0, // has the effect of extending the shadow
+                  offset: Offset(
+                    -1.0, // horizontal, move right 10
+                    3.0, // vertical, move down 10
+                  ),
+                )
+              ],
+
             )));
   }
 }

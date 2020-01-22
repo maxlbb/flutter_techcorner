@@ -14,7 +14,7 @@ class DetailWidget extends StatelessWidget {
           backgroundColor: Colors.red,
           automaticallyImplyLeading: true,
           elevation: 0,
-          title: Text('XYZ', style: TextStyle(color: Colors.white)),
+          title: Text('Nike', style: TextStyle(color: Colors.white)),
           // leading:
 
           /*  IconButton(
@@ -22,7 +22,7 @@ class DetailWidget extends StatelessWidget {
           ),
           */
           actions: <Widget>[
-            RoundButton(30, 30, Icons.favorite),
+            RoundButton(30, 30, Icons.favorite,Colors.red),
           ],
         ),
         body: Container(
@@ -51,8 +51,8 @@ class DetailWidget extends StatelessWidget {
                     Container(
                       alignment: Alignment.topCenter,
                       child: Container(
-                        height: 192.0,
-                        width: 192.0,
+                        height: 280.0,
+                        width: 280.0,
                         child: Hero(
                           transitionOnUserGestures: true,
                           tag: 'shoe_image' + _itemCardModel.id.toString(),
@@ -66,7 +66,7 @@ class DetailWidget extends StatelessWidget {
               Container(
                 height: 100,
                 child: ListView.builder(
-                    itemCount: 5,
+                    itemCount: 30,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (ctx, i) => Container(
                       width: 50,
