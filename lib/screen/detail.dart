@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/Utility/round_button.dart';
 import 'package:flutter_state_techcorner/model/item_card_model.dart';
+import 'package:flutter_state_techcorner/widget/item_detail_card.dart';
 
 class DetailWidget extends StatelessWidget {
   final ItemCardModel _itemCardModel;
@@ -10,20 +11,17 @@ class DetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          automaticallyImplyLeading: true,
-          elevation: 0,
-          title: Text('Nike', style: TextStyle(color: Colors.white)),
-          // leading:
-
-          /*  IconButton(
-            icon: Icon(Icons.keyboard_arrow_left),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: AppBar(
+            backgroundColor: Colors.red,
+            automaticallyImplyLeading: true,
+            elevation: 0,
+            title: Text('Nike', style: TextStyle(color: Colors.white)),
+            actions: <Widget>[
+              RoundButton(30, 30, Icons.favorite, Colors.red),
+            ],
           ),
-          */
-          actions: <Widget>[
-            RoundButton(30, 30, Icons.favorite,Colors.red),
-          ],
         ),
         body: Container(
           child: Column(
@@ -65,20 +63,29 @@ class DetailWidget extends StatelessWidget {
               ),
               Container(
                 height: 100,
+                padding: EdgeInsets.all(10.0),
                 child: ListView.builder(
                     itemCount: 30,
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (ctx, i) => Container(
-                      width: 50,
-                      height: 50,
-                      child: IconButton(
-                        icon: Icon(Icons.opacity),
-                      ),
-                      decoration: new BoxDecoration(color: Colors.grey),
-                    )),
+                    itemBuilder: (ctx, i) => ItemDetailCard(Image.asset(_itemCardModel.image),Colors.black12)),
               ),
+             Container(
+               child:
+               RichText(
+                 text: TextSpan(
+                   style: TextStyle(color: Colors.black,fontSize: 25),
+                   children: <TextSpan>[
+                     TextSpan(text: 'Air-Max-270', style: TextStyle(fontWeight: FontWeight.bold)),
+
+                   ],
+                 ),
+               ),
+             ),
             ],
           ),
         ));
   }
 }
+
+
+
