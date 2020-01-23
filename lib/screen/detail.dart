@@ -7,6 +7,8 @@ class DetailWidget extends StatelessWidget {
   final ItemCardModel _itemCardModel;
 
   DetailWidget(this._itemCardModel);
+  Color backgroundColor = new Color.fromARGB(255,228,173,157);
+  Color backgroundColorTopButton = new Color.fromARGB(255,219,174,163);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +16,12 @@ class DetailWidget extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.0),
           child: AppBar(
-            backgroundColor: Colors.red,
+            backgroundColor: backgroundColor,
             automaticallyImplyLeading: true,
             elevation: 0,
             title: Text('Nike', style: TextStyle(color: Colors.white)),
             actions: <Widget>[
-              RoundButton(30, 30, Icons.favorite, Colors.red),
+              RoundButton(30, 30, Icons.favorite, backgroundColorTopButton),
             ],
           ),
         ),
@@ -40,7 +42,7 @@ class DetailWidget extends StatelessWidget {
                             width: 550,
                             decoration: new BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.red,
+                              color: backgroundColor,
                             ),
                           ),
                         ),
@@ -90,15 +92,36 @@ class DetailWidget extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.only(right: 10.0),
                       alignment: Alignment.topRight,
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black, fontSize: 25),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: '\$150',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ],
-                        ),
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned(
+                            top:14,
+                            left: 5,
+
+                            child: Container(
+                              height: 55,
+                              width: 100,
+                              decoration: new BoxDecoration(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                color: new Color.fromARGB(255, 250, 227, 233),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(color: Colors.black, fontSize: 25),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: '\$150.00',
+                                      style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                        ],
                       ),
                     ),
                   ],
