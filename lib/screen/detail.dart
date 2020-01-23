@@ -67,25 +67,45 @@ class DetailWidget extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: 30,
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (ctx, i) => ItemDetailCard(Image.asset(_itemCardModel.image),Colors.black12)),
+                    itemBuilder: (ctx, i) => ItemDetailCard(
+                        Image.asset(_itemCardModel.image), Colors.black12)),
               ),
-             Container(
-               child:
-               RichText(
-                 text: TextSpan(
-                   style: TextStyle(color: Colors.black,fontSize: 25),
-                   children: <TextSpan>[
-                     TextSpan(text: 'Air-Max-270', style: TextStyle(fontWeight: FontWeight.bold)),
-
-                   ],
-                 ),
-               ),
-             ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black, fontSize: 25),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Air-Max-270',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 10.0),
+                      alignment: Alignment.topRight,
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black, fontSize: 25),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: '\$150',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ));
   }
 }
-
-
-
