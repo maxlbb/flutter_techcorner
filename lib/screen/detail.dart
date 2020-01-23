@@ -66,11 +66,21 @@ class DetailWidget extends StatelessWidget {
               Container(
                 height: 100,
                 padding: EdgeInsets.all(10.0),
-                child: ListView.builder(
-                    itemCount: 30,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (ctx, i) => ItemDetailCard(
-                        Image.asset(_itemCardModel.image), Colors.black12)),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+
+                  children: <Widget>[
+                    ItemDetailCard(
+                        Image.asset(_itemCardModel.image), Colors.black12,false),
+
+                    ItemDetailCard(
+                        Image.asset(_itemCardModel.image), Colors.black12,false),
+                    ItemDetailCard(
+                        Image.asset(_itemCardModel.image), Colors.black12,false),
+                    ItemDetailCard(
+                        Image.asset(_itemCardModel.image), Colors.black12,true)
+                  ],
+                )
               ),
               Container(
                 child: Row(
