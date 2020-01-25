@@ -147,6 +147,28 @@ class DetailWidget extends StatelessWidget {
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: marginBorder, right: marginBorder, top: marginBorder),
+                child: Text(
+                    "HJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKH"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: marginBorder, top: marginBorder),
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Colors.black, fontSize: 15),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'MORE DETAILS',
+                            style: TextStyle(fontWeight: FontWeight.normal)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ));
