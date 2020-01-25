@@ -7,8 +7,10 @@ class DetailWidget extends StatelessWidget {
   final ItemCardModel _itemCardModel;
 
   DetailWidget(this._itemCardModel);
-  Color backgroundColor = new Color.fromARGB(255,228,173,157);
-  Color backgroundColorTopButton = new Color.fromARGB(255,219,174,163);
+
+  Color backgroundColor = new Color.fromARGB(255, 228, 173, 157);
+  Color backgroundColorTopButton = new Color.fromARGB(255, 219, 174, 163);
+  final double marginBorder = 10.0;
 
   @override
   Widget build(BuildContext context) {
@@ -64,30 +66,39 @@ class DetailWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 100,
-                padding: EdgeInsets.all(10.0),
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-
-                  children: <Widget>[
-                    ItemDetailCard(
-                        Image.asset(_itemCardModel.image), Colors.black12,false),
-
-                    ItemDetailCard(
-                        Image.asset(_itemCardModel.image), Colors.black12,false),
-                    ItemDetailCard(
-                        Image.asset(_itemCardModel.image), Colors.black12,false),
-                    ItemDetailCard(
-                        Image.asset(_itemCardModel.image), Colors.black12,true)
-                  ],
-                )
-              ),
+                  height: 100,
+                  padding: EdgeInsets.all(10.0),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      ItemDetailCard(
+                        Image.asset(_itemCardModel.image),
+                        backgroundColor: Colors.black12,
+                        isVideo: false,
+                      ),
+                      ItemDetailCard(
+                        Image.asset(_itemCardModel.image),
+                        backgroundColor: Colors.black12,
+                        isVideo: false,
+                      ),
+                      ItemDetailCard(
+                        Image.asset(_itemCardModel.image),
+                        backgroundColor: Colors.black12,
+                        isVideo: false,
+                      ),
+                      ItemDetailCard(
+                        Image.asset(_itemCardModel.image),
+                        backgroundColor: Colors.black12,
+                        isVideo: true,
+                      )
+                    ],
+                  )),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(left: 10.0),
+                      padding: EdgeInsets.only(left: marginBorder),
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(color: Colors.black, fontSize: 25),
@@ -100,14 +111,13 @@ class DetailWidget extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(right: 10.0),
+                      padding: EdgeInsets.only(right: marginBorder),
                       alignment: Alignment.topRight,
                       child: Stack(
                         children: <Widget>[
                           Positioned(
-                            top:14,
+                            top: 14,
                             left: 5,
-
                             child: Container(
                               height: 55,
                               width: 100,
@@ -120,17 +130,17 @@ class DetailWidget extends StatelessWidget {
                           Container(
                             child: RichText(
                               text: TextSpan(
-                                style: TextStyle(color: Colors.black, fontSize: 25),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 25),
                                 children: <TextSpan>[
                                   TextSpan(
                                       text: '\$150.00',
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
                           ),
-
                         ],
                       ),
                     ),

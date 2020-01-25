@@ -5,7 +5,7 @@ class ItemDetailCard extends StatelessWidget {
   final Color backgroundColor;
   final bool isVideo;
 
-  ItemDetailCard(this.image, this.backgroundColor, this.isVideo);
+  ItemDetailCard(this.image, {this.backgroundColor, this.isVideo});
 
   @override
   Widget build(BuildContext context) {
