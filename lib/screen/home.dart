@@ -9,9 +9,6 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  int selectedBrand = 0;
-  int selectedStatus = 1;
-
   @override
   void initState() {
     super.initState();
@@ -47,11 +44,13 @@ class _HomeWidgetState extends State<HomeWidget> {
         itemCount: 2,
         itemBuilder: (BuildContext listContext, int index) {
           return ItemCardWidget(Shoe(
-              id: 0,
+              id: index,
               brand: "Brand",
-              image: "",
+              image: "nike_shoe.png",
               model: "Nike",
-              price: 200));
+              price: 200
+            )
+          );
         },
       ),
     );
@@ -87,7 +86,9 @@ class _HomeWidgetState extends State<HomeWidget> {
         itemCount: 3,
         itemBuilder: (BuildContext listContext, int index) {
           return GestureDetector(
-              child: ItemFilterWidget("Brand", true), onTap: () {});
+            child: ItemFilterWidget("Brand", true), 
+            onTap: () {}
+          );
         },
       ),
     );
