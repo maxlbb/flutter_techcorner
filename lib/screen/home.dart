@@ -1,45 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/blocs/bloc_provider.dart';
-import 'package:flutter_state_techcorner/blocs/shop_items_bloc.dart';
-import 'package:flutter_state_techcorner/model/brand_filter.dart';
-import 'package:flutter_state_techcorner/model/status_filter.dart';
-import 'package:flutter_state_techcorner/model/item_card_model.dart';
+import 'package:flutter_state_techcorner/blocs/shoes_bloc.dart';
+import 'package:flutter_state_techcorner/model/brand_states.dart';
+import 'package:flutter_state_techcorner/model/filter_event.dart';
+import 'package:flutter_state_techcorner/model/filter_status.dart';
+import 'package:flutter_state_techcorner/model/shoes_states.dart';
 import 'package:flutter_state_techcorner/widget/item_card.dart';
 import 'package:flutter_state_techcorner/widget/item_filter.dart';
-import 'package:flutter_state_techcorner/widget/item_cart.dart';
 
-class HomeWidget extends StatelessWidget {
+class HomeWidget extends StatefulWidget {
+  @override
+  _HomeWidgetState createState() => _HomeWidgetState();
+}
+
+class _HomeWidgetState extends State<HomeWidget> {
+  int selectedBrand = 0;
+  int selectedStatus = 1;
+  ShoesBloc _shoesBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _shoesBloc = BlocProvider.of<ShoesBloc>(context);
+    _shoesBloc.loadItems();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ShopItemsBloc shopItemsBloc = BlocProvider.of<ShopItemsBloc>(context);
-    shopItemsBloc.loadItems();
-
     return Column(
       children: <Widget>[
         Container(
           margin:
               EdgeInsets.only(left: 16.0, top: 8.0, right: 8.0, bottom: 8.0),
           height: 30.0,
-          child: StreamBuilder<List<BrandFilter>>(
-              stream: shopItemsBloc.brandFilterStream,
+          child: StreamBuilder<BrandsStates>(
+              stream: _shoesBloc.brands,
               builder: (context, snapshot) {
                 if (snapshot.data != null) {
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext listContext, int index) {
-                      return GestureDetector(
-                        child: ItemFilterWidget(snapshot.data[index].brand,
-                            snapshot.data[index].isSelected),
-                        onTap: () {
-                          shopItemsBloc.filterDiscoverItemsByBrand(
-                              snapshot.data[index].brand);
-                        },
-                      );
-                    },
-                  );
+                  if (snapshot.data is BrandsLoaded) {
+                    BrandsLoaded brands = snapshot.data as BrandsLoaded;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: brands.brandsList.length,
+                      itemBuilder: (BuildContext listContext, int index) {
+                        return GestureDetector(
+                          child: ItemFilterWidget(
+                              brands.brandsList[index].brand,
+                              selectedBrand == index),
+                          onTap: () {
+                            _shoesBloc.filterSink.add(BrandFilterEvent(
+                                brands.brandsList[index].brand));
+                            setState(() {
+                              selectedBrand = index;
+                            });
+                          },
+                        );
+                      },
+                    );
+                  } else {
+                    return Text("Loading...");
+                  }
                 } else {
-                  return Text("Loading...");
+                  return Container();
                 }
               }),
         ),
@@ -48,50 +70,52 @@ class HomeWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              StreamBuilder<List<StatusFilter>>(
-                  stream: shopItemsBloc.statusFilterStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.data != null) {
-                      return RotatedBox(
-                        quarterTurns: 1,
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 8),
-                          height: 32.0,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext listContext, int index) {
-                              return GestureDetector(
-                                child: ItemFilterWidget(
-                                    snapshot.data[index].status,
-                                    snapshot.data[index].isSelected),
-                                onTap: () {
-                                  shopItemsBloc.filterDiscoverItemsByStatus(
-                                      snapshot.data[index].status);
-                                },
-                              );
-                            },
-                          ),
-                        ),
+              RotatedBox(
+                quarterTurns: 1,
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 8),
+                  height: 32.0,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: StatusFilter.getStatusList.length,
+                    itemBuilder: (BuildContext listContext, int index) {
+                      return GestureDetector(
+                        child: ItemFilterWidget(
+                            StatusFilter.getStatusList[index].status,
+                            selectedStatus == index),
+                        onTap: () {
+                          _shoesBloc.filterSink.add(StatusFilterEvent(
+                              StatusFilter.getStatusList[index].status));
+                          setState(() {
+                            selectedStatus = index;
+                          });
+                        },
                       );
-                    } else {
-                      return Text("Loading...");
-                    }
-                  }),
+                    },
+                  ),
+                ),
+              ),
               Expanded(
-                child: StreamBuilder<List<ItemCardModel>>(
-                    stream: shopItemsBloc.discoverItemsStream,
+                child: StreamBuilder<ShoesStates>(
+                    stream: _shoesBloc.shoes,
                     builder: (context, snapshot) {
                       if (snapshot.data != null) {
-                        return new ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext listContext, int index) {
-                              return new ItemCardWidget(snapshot.data[index]);
-                            });
+                        if (snapshot.data is ShoesLoaded) {
+                          ShoesLoaded shoes = snapshot.data as ShoesLoaded;
+                          return new ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: shoes.shoesList.length,
+                              itemBuilder:
+                                  (BuildContext listContext, int index) {
+                                return new ItemCardWidget(
+                                    shoes.shoesList[index]);
+                              });
+                        } else {
+                          return Text("Loading...");
+                        }
                       } else {
-                        return Text("Loading...");
+                        return Container();
                       }
                     }),
               ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_techcorner/model/item_card_model.dart';
+import 'package:flutter_state_techcorner/model/shoe.dart';
 
 class DetailWidget extends StatelessWidget {
-  final ItemCardModel _itemCardModel;
+  final Shoe _itemCardModel;
 
   DetailWidget(this._itemCardModel);
 

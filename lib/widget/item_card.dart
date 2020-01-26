@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_techcorner/model/item_card_model.dart';
+import 'package:flutter_state_techcorner/model/shoe.dart';
 import 'package:flutter_state_techcorner/screen/detail.dart';
 
 class ItemCardWidget extends StatelessWidget {
-  final ItemCardModel _itemCardModel;
+  final Shoe _itemCardModel;
 
   ItemCardWidget(this._itemCardModel);
 
@@ -50,9 +50,9 @@ class ItemCardWidget extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: _itemCardModel.favorite
+                        icon: /*_itemCardModel.favorite
                             ? Icon(Icons.favorite)
-                            : Icon(Icons.favorite_border),
+                            :*/ Icon(Icons.favorite_border),
                         color: Colors.white,
                         onPressed: () {},
                       )

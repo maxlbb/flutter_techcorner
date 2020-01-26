@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/blocs/bloc_provider.dart';
-import 'package:flutter_state_techcorner/blocs/shop_items_bloc.dart';
-import 'widget/item_cart.dart';
-import 'model/item_cart_model.dart';
+import 'package:flutter_state_techcorner/blocs/shoes_bloc.dart';
 import 'screen/home.dart';
 
 void main() => runApp(MyApp());
@@ -11,8 +9,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ShopItemsBloc>(
-      bloc: ShopItemsBloc(),
+    return BlocProvider<ShoesBloc>(
+      bloc: ShoesBloc(),
       child: MaterialApp(
         title: 'TechCorner',
         theme: ThemeData(
