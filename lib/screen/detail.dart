@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/Utility/round_button.dart';
+import 'package:flutter_state_techcorner/model/shoe_detail.dart';
 import 'package:flutter_state_techcorner/widget/item_detail_card.dart';
 import '../model/shoe.dart';
 
 class DetailWidget extends StatelessWidget {
-  final Shoe _itemCardModel;
+  final ShoeDetail _itemCardModel;
 
   DetailWidget(this._itemCardModel);
 
@@ -21,167 +22,170 @@ class DetailWidget extends StatelessWidget {
             backgroundColor: backgroundColor,
             automaticallyImplyLeading: true,
             elevation: 0,
-            title: Text('Nike', style: TextStyle(color: Colors.white)),
+            title: Text(_itemCardModel.brand, style: TextStyle(color: Colors.white)),
             actions: <Widget>[
               RoundButton(30, 30, Icons.favorite, backgroundColorTopButton),
             ],
           ),
         ),
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      height: 300,
-                      child: Stack(children: <Widget>[
-                        Positioned(
-                          top: -300,
-                          left: -30,
-                          child: Container(
-                            height: 550,
-                            width: 550,
-                            decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: backgroundColor,
-                            ),
-                          ),
-                        ),
-                      ]),
-                    ),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 280.0,
-                        width: 280.0,
-                        child: Hero(
-                          transitionOnUserGestures: true,
-                          tag: 'shoe_image' + _itemCardModel.id.toString(),
-                          child: Image.asset(_itemCardModel.image),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                  height: 100,
-                  padding: EdgeInsets.all(10.0),
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Center(
+                  child: Stack(
                     children: <Widget>[
-                      ItemDetailCard(
-                        Image.asset(_itemCardModel.image),
-                        backgroundColor: Colors.black12,
-                        isVideo: false,
-                      ),
-                      ItemDetailCard(
-                        Image.asset(_itemCardModel.image),
-                        backgroundColor: Colors.black12,
-                        isVideo: false,
-                      ),
-                      ItemDetailCard(
-                        Image.asset(_itemCardModel.image),
-                        backgroundColor: Colors.black12,
-                        isVideo: false,
-                      ),
-                      ItemDetailCard(
-                        Image.asset(_itemCardModel.image),
-                        backgroundColor: Colors.black12,
-                        isVideo: true,
-                      )
-                    ],
-                  )),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(left: marginBorder),
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black, fontSize: 25),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Air-Max-270',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: marginBorder),
-                      alignment: Alignment.topRight,
-                      child: Stack(
-                        children: <Widget>[
+                      Container(
+                        height: 300,
+                        child: Stack(children: <Widget>[
                           Positioned(
-                            top: 14,
-                            left: 5,
+                            top: -300,
+                            left: -30,
                             child: Container(
-                              height: 55,
-                              width: 100,
+                              height: 550,
+                              width: 550,
                               decoration: new BoxDecoration(
-                                borderRadius: new BorderRadius.circular(10.0),
-                                color: new Color.fromARGB(255, 250, 227, 233),
+                                shape: BoxShape.circle,
+                                color: backgroundColor,
                               ),
                             ),
                           ),
-                          Container(
-                            child: RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 25),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: '\$150.00',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                        ]),
                       ),
-                    ),
-                  ],
+                      Container(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          height: 280.0,
+                          width: 280.0,
+                          child: Hero(
+                            transitionOnUserGestures: true,
+                            tag: 'shoe_image' + _itemCardModel.id.toString(),
+                            child: Image.asset(_itemCardModel.image),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: marginBorder, right: marginBorder, top: marginBorder),
-                child: Text(
-                    "HJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKHHJKLHJKLHJLKHKLHJKLHJKLHJLKHJKLHJKLHKLHHLHLKH"),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: marginBorder, top: marginBorder),
-                child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black, fontSize: 15),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'MORE DETAILS',
-                                style:
-                                    TextStyle(fontWeight: FontWeight.normal)),
+                Container(
+                    height: 100,
+                    padding: EdgeInsets.all(10.0),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        ItemDetailCard(
+                          Image.asset(_itemCardModel.image),
+                          backgroundColor: Colors.black12,
+                          isVideo: false,
+                        ),
+                        ItemDetailCard(
+                          Image.asset(_itemCardModel.image),
+                          backgroundColor: Colors.black12,
+                          isVideo: false,
+                        ),
+                        ItemDetailCard(
+                          Image.asset(_itemCardModel.image),
+                          backgroundColor: Colors.black12,
+                          isVideo: false,
+                        ),
+                        ItemDetailCard(
+                          Image.asset(_itemCardModel.image),
+                          backgroundColor: Colors.black12,
+                          isVideo: true,
+                        )
+                      ],
+                    )),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(left: marginBorder, top: 16),
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(color: Colors.black, fontSize: 25),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: _itemCardModel.model,
+                                style: TextStyle(fontWeight: FontWeight.bold)
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(right: marginBorder, top: 16),
+                        alignment: Alignment.topRight,
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned(
+                              top: 14,
+                              left: 5,
+                              child: Container(
+                                height: 55,
+                                width: 100,
+                                decoration: new BoxDecoration(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                  color: new Color.fromARGB(255, 250, 227, 233),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 25),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: '\$${_itemCardModel.price}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    Container(
-                      height: 1,
-                      width: 110,
-                      color: Colors.black,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: marginBorder, right: marginBorder, top: marginBorder),
+                  child: Text(_itemCardModel.description),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: marginBorder, top: marginBorder),
+                  child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: 'MORE DETAILS',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.normal)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        width: 110,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ));
+        )
+    );
   }
 }

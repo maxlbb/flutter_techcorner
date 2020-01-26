@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       color: Colors.white,
       child: ChangeNotifierProvider<HomeNotifier>(
-        create: (ctx) => HomeNotifier(),
+        create: (ctx) => HomeNotifier(navigatorService: Provider.of<NavigatorService>(ctx, listen: false)),
         child: HomeWidget(),
       ),
     );

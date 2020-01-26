@@ -24,20 +24,23 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   _buildBuildHomeWidget(BuildContext context) {
-    var shoes = Provider.of<HomeNotifier>(context).shoes;
-    var brands = Provider.of<HomeNotifier>(context).brands;
+    var isLoading = Provider.of<HomeNotifier>(context).isLoading;
 
-    if(shoes.isEmpty || brands.isEmpty) {
-      return Align(
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    return Column(
+    return Stack(
       children: <Widget>[
-        _buildBrands(),
-        _buildItemList(),
+        Column(
+          children: <Widget>[
+            _buildBrands(),
+            _buildItemList(),
+          ],
+        ),
+
+        isLoading ? Container(
+          child: Align(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          ),
+        ) : Container()
       ],
     );
   }
@@ -71,21 +74,23 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   _buildSideBrand() {
-    return RotatedBox(
-      quarterTurns: 1,
-      child: Container(
-        margin: EdgeInsets.only(bottom: 8),
-        height: 32.0,
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: 1,
-          itemBuilder: (BuildContext listContext, int index) {
-            return GestureDetector(
-              child: ItemFilterWidget("Featured", false),
-              onTap: () {},
-            );
-          },
+    return Consumer<HomeNotifier>(
+      builder: (_, model, ___) => RotatedBox(
+        quarterTurns: 1,
+        child: Container(
+          margin: EdgeInsets.only(bottom: 8),
+          height: 32.0,
+          child: model.shoes.length > 0 ? ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: 1,
+            itemBuilder: (BuildContext listContext, int index) {
+              return GestureDetector(
+                child: ItemFilterWidget("Featured", false),
+                onTap: () {},
+              );
+            },
+          ) : Container(),
         ),
       ),
     );
