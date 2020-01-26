@@ -28,12 +28,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 
   @override
@@ -64,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text('Account'),
         ),
       ],
-      currentIndex: _selectedIndex,
+      currentIndex: 0,
       selectedItemColor: Colors.amber[800],
       unselectedItemColor: Colors.grey[400],
       onTap: _onItemTapped,

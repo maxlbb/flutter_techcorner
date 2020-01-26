@@ -8,23 +8,14 @@ class DetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        automaticallyImplyLeading: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Stack(
+    return Stack(
         children: <Widget>[
-          /*Hero(
+          Hero(
             tag: 'back' + _itemCardModel.id.toString(),
             child: DecoratedBox(
               decoration: BoxDecoration(color: Colors.orange),
             ),
-          ),*/
+          ),
           Container(
             alignment: Alignment.topCenter,
             color: Colors.white,
@@ -39,7 +30,6 @@ class DetailWidget extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 }
