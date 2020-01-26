@@ -8,8 +8,8 @@ class DetailWidget extends StatelessWidget {
 
   DetailWidget(this._itemCardModel);
 
-  Color backgroundColor = new Color.fromARGB(255, 228, 173, 157);
-  Color backgroundColorTopButton = new Color.fromARGB(255, 219, 174, 163);
+  final Color backgroundColor = new Color.fromARGB(255, 228, 173, 157);
+  final Color backgroundColorTopButton = new Color.fromARGB(255, 219, 174, 163);
   final double marginBorder = 10.0;
 
   @override

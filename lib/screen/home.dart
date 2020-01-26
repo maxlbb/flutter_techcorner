@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../model/shoe.dart';
+import 'package:flutter_state_techcorner/provider/home_notifier.dart';
+import 'package:provider/provider.dart';
 import '../widget/item_card.dart';
 import '../widget/item_filter.dart';
 
@@ -12,10 +13,27 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(milliseconds: 100), () {
+      Provider.of<HomeNotifier>(context, listen: false).init();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    return _buildBuildHomeWidget(context);
+  }
+
+  _buildBuildHomeWidget(BuildContext context) {
+    var shoes = Provider.of<HomeNotifier>(context).shoes;
+    var brands = Provider.of<HomeNotifier>(context).brands;
+
+    if(shoes.isEmpty || brands.isEmpty) {
+      return Align(
+        alignment: Alignment.center,
+        child: CircularProgressIndicator(),
+      );
+    }
+
     return Column(
       children: <Widget>[
         _buildBrands(),
@@ -24,7 +42,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  Container _buildItemList() {
+  _buildItemList() {
     return Container(
         height: 288.0,
         child: Row(
@@ -37,26 +55,22 @@ class _HomeWidgetState extends State<HomeWidget> {
       );
   }
 
-  Expanded _buildItems() {
+  _buildItems() {
     return Expanded(
-      child: ListView.builder(
+      child: Consumer<HomeNotifier>(
+        builder: (_, model, __) => ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 2,
+        itemCount: model.shoes.length,
         itemBuilder: (BuildContext listContext, int index) {
-          return ItemCardWidget(Shoe(
-              id: index,
-              brand: "Brand",
-              image: "nike_shoe.png",
-              model: "Nike",
-              price: 200
-            )
-          );
+          var shoe = model.shoes[index];
+          return ItemCardWidget(shoe);
         },
+      ),
       ),
     );
   }
 
-  RotatedBox _buildSideBrand() {
+  _buildSideBrand() {
     return RotatedBox(
       quarterTurns: 1,
       child: Container(
@@ -68,7 +82,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           itemCount: 1,
           itemBuilder: (BuildContext listContext, int index) {
             return GestureDetector(
-              child: ItemFilterWidget("brand", false),
+              child: ItemFilterWidget("Featured", false),
               onTap: () {},
             );
           },
@@ -77,19 +91,25 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  Container _buildBrands() {
-    return Container(
-      margin: EdgeInsets.only(left: 16.0, top: 8.0, right: 8.0, bottom: 8.0),
-      height: 30.0,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 3,
-        itemBuilder: (BuildContext listContext, int index) {
-          return GestureDetector(
-            child: ItemFilterWidget("Brand", true), 
-            onTap: () {}
-          );
-        },
+  _buildBrands() {
+    return Consumer<HomeNotifier>(
+      builder: (_, model, ___) => Container(
+        margin: EdgeInsets.only(left: 16.0, top: 8.0, right: 8.0, bottom: 8.0),
+        height: 30.0,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: model.brands.length,
+          itemBuilder: (BuildContext listContext, int index) {
+            var item = model.brands[index];
+
+            return GestureDetector(
+              child: ItemFilterWidget(item.brand, item.selected), 
+              onTap: () {
+                model.selectBrand(index);
+              }
+            );
+          },
+        ),
       ),
     );
   }

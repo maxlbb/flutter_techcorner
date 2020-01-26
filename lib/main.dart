@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_state_techcorner/model/shoe.dart';
+import 'package:flutter_state_techcorner/model/shoe_detail.dart';
+import 'package:flutter_state_techcorner/provider/home_notifier.dart';
+import 'package:flutter_state_techcorner/screen/detail.dart';
+import 'package:flutter_state_techcorner/service/navigator_service.dart';
+import 'package:flutter_state_techcorner/utility/route_constants.dart';
+import 'package:provider/provider.dart';
 import 'screen/home.dart';
 
 void main() => runApp(MyApp());
@@ -7,14 +14,39 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    var navigatorService = NavigatorService();
+
     return MaterialApp(
       title: 'TechCorner',
       theme: ThemeData(
         fontFamily: 'FuturaPT',
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Discover'),
+      navigatorKey: navigatorService.navigatorKey,
+      onGenerateRoute: (settings) {
+        final arguments = settings.arguments;
+        switch(settings.name) {
+          case RouteConstants.home: {
+            return MaterialPageRoute(builder: (ctx) => HomeWidget());
+          }
+          case RouteConstants.details: {
+            return MaterialPageRoute(builder: (ctx) => DetailWidget(arguments));
+          }
+          default: throw new Exception("route not found!");
+        }
+      },
+      home: MultiProvider(
+        providers: _setupDependencies(navigatorService),
+        child: MyHomePage(title: 'Discover'),
+      ),
     );
+  }
+
+  _setupDependencies(NavigatorService navigator) {
+    var provider = Provider.value(value: navigator);
+    return [
+      provider
+    ];
   }
 }
 
@@ -70,7 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Container buildHomeContainer() {
     return Container(
       color: Colors.white,
-      child: HomeWidget(),
+      child: ChangeNotifierProvider<HomeNotifier>(
+        create: (ctx) => HomeNotifier(),
+        child: HomeWidget(),
+      ),
     );
   }
 
