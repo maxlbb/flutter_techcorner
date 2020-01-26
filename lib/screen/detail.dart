@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/Utility/round_button.dart';
-import 'package:flutter_state_techcorner/model/item_card_model.dart';
 import 'package:flutter_state_techcorner/widget/item_detail_card.dart';
+import '../model/shoe.dart';
 
 class DetailWidget extends StatelessWidget {
   final Shoe _itemCardModel;
