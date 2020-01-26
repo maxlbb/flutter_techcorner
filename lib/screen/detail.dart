@@ -155,18 +155,29 @@ class DetailWidget extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(left: marginBorder, top: marginBorder),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(color: Colors.black, fontSize: 15),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'MORE DETAILS',
-                            style: TextStyle(fontWeight: FontWeight.normal)),
-                      ],
+                child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'MORE DETAILS',
+                                style:
+                                    TextStyle(fontWeight: FontWeight.normal)),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    Container(
+                      height: 1,
+                      width: 110,
+                      color: Colors.black,
+                    ),
+                  ],
                 ),
               ),
             ],
