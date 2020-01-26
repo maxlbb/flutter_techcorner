@@ -5,5 +5,5 @@ class Shoe {
   final double price;
   final String image;
 
-  Shoe(this.id, this.brand, this.model, this.price, this.image);
+  Shoe({this.id, this.brand, this.model, this.price, this.image});
 }
