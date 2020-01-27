@@ -39,8 +39,10 @@ class HomeNotifier extends BaseNotifier {
     get([Api.PATH_DETAILS + "/$id"], (response) {
       showLoader(show: false);
 
-      var shoeDetail = convertResponseToDetailShoesItems(response[0].body);
-      navigatorService.navigateTo(RouteConstants.details, shoeDetail);
+      if(response[0].statusCode == 200) {
+        var shoeDetail = convertResponseToDetailShoesItems(response[0].body);
+        navigatorService.navigateTo(RouteConstants.details, shoeDetail);
+      }
     });
   }
 
