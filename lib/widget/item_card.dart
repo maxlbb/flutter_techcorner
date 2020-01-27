@@ -97,7 +97,7 @@ class ItemCardWidget extends StatelessWidget {
               child: Hero(
                 transitionOnUserGestures: true,
                 tag: 'shoe_image' + _itemCardModel.id.toString(),
-                child: Image.asset(_itemCardModel.image),
+                child: Image.network(_itemCardModel.image),
               ),
             )
           ],

@@ -19,12 +19,6 @@ class DetailWidget extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          /*Hero(
-            tag: 'back' + _itemCardModel.id.toString(),
-            child: DecoratedBox(
-              decoration: BoxDecoration(color: Colors.orange),
-            ),
-          ),*/
           Container(
             alignment: Alignment.topCenter,
             color: Colors.white,

@@ -19,10 +19,10 @@ class _HomeWidgetState extends State<HomeWidget> {
   ShoesBloc _shoesBloc;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
     _shoesBloc = BlocProvider.of<ShoesBloc>(context);
-    _shoesBloc.loadItems();
+    _shoesBloc.fetchAll();
+    super.didChangeDependencies();
   }
 
   @override
@@ -36,32 +36,29 @@ class _HomeWidgetState extends State<HomeWidget> {
           child: StreamBuilder<BrandsStates>(
               stream: _shoesBloc.brands,
               builder: (context, snapshot) {
-                if (snapshot.data != null) {
-                  if (snapshot.data is BrandsLoaded) {
-                    BrandsLoaded brands = snapshot.data as BrandsLoaded;
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: brands.brandsList.length,
-                      itemBuilder: (BuildContext listContext, int index) {
-                        return GestureDetector(
-                          child: ItemFilterWidget(
-                              brands.brandsList[index].brand,
-                              selectedBrand == index),
-                          onTap: () {
-                            _shoesBloc.filterSink.add(BrandFilterEvent(
-                                brands.brandsList[index].brand));
-                            setState(() {
-                              selectedBrand = index;
-                            });
-                          },
-                        );
-                      },
-                    );
-                  } else {
-                    return Text("Loading...");
-                  }
+                if (snapshot.data is BrandsLoaded) {
+                  BrandsLoaded brands = snapshot.data as BrandsLoaded;
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: brands.brandsList.length,
+                    itemBuilder: (BuildContext listContext, int index) {
+                      return GestureDetector(
+                        child: ItemFilterWidget(brands.brandsList[index].brand,
+                            selectedBrand == index),
+                        onTap: () {
+                          _shoesBloc.filterSink.add(
+                              BrandFilterEvent(brands.brandsList[index].brand));
+                          setState(() {
+                            selectedBrand = index;
+                          });
+                        },
+                      );
+                    },
+                  );
+                } else if (snapshot.data is BrandsUninitialized) {
+                  return Text("Loading...");
                 } else {
-                  return Container();
+                  return Text("Error!");
                 }
               }),
         ),
@@ -100,22 +97,18 @@ class _HomeWidgetState extends State<HomeWidget> {
                 child: StreamBuilder<ShoesStates>(
                     stream: _shoesBloc.shoes,
                     builder: (context, snapshot) {
-                      if (snapshot.data != null) {
-                        if (snapshot.data is ShoesLoaded) {
-                          ShoesLoaded shoes = snapshot.data as ShoesLoaded;
-                          return new ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: shoes.shoesList.length,
-                              itemBuilder:
-                                  (BuildContext listContext, int index) {
-                                return new ItemCardWidget(
-                                    shoes.shoesList[index]);
-                              });
-                        } else {
-                          return Text("Loading...");
-                        }
+                      if (snapshot.data is ShoesLoaded) {
+                        ShoesLoaded shoes = snapshot.data as ShoesLoaded;
+                        return new ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: shoes.shoesList.length,
+                            itemBuilder: (BuildContext listContext, int index) {
+                              return new ItemCardWidget(shoes.shoesList[index]);
+                            });
+                      } else if (snapshot.data is ShoesUninitialized) {
+                        return Text("Loading...");
                       } else {
-                        return Container();
+                        return Text("Error!");
                       }
                     }),
               ),
@@ -124,5 +117,11 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _shoesBloc.dispose();
+    super.dispose();
   }
 }
