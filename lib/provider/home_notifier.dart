@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_techcorner/converter/detail_converter.dart';
-import 'package:flutter_state_techcorner/converter/home_converter.dart' as homeConverter;
 import 'package:flutter_state_techcorner/provider/base_notifier.dart';
 import 'package:flutter_state_techcorner/service/navigator_service.dart';
 import 'package:flutter_state_techcorner/utility/route_constants.dart';
 import '../model/brand.dart';
 import '../model/shoe.dart';
-import 'constants.dart';
 
 class HomeNotifier extends BaseNotifier {
   NavigatorService navigatorService;
 
-  HomeNotifier({@required this.navigatorService});
+  HomeNotifier({@required this.navigatorService, @required api}): super(api);
 
   List<Brand> _brands = [];
   List<Brand> get brands => _brands;
@@ -23,11 +20,9 @@ class HomeNotifier extends BaseNotifier {
   void init() {
     showLoader(show: true);
 
-    get([Api.PATH_PRODUCTS, Api.PATH_BRANDS], (responses) {
-      var shoes = homeConverter.convertResponseToShoesItems(responses[0].body);
-      var brands = homeConverter.convertResponseToBrandItems(responses[1].body);
-      _shoes = shoes;
-      _brands = brands;
+    api.getProductsAndBrands((shoesConverted, brandsConverted) {
+      _shoes = shoesConverted;
+      _brands = brandsConverted;
       notifyListeners();
       showLoader(show: false);
     });
@@ -36,13 +31,9 @@ class HomeNotifier extends BaseNotifier {
   void onItemPressed(int id) {
     showLoader(show: true);
 
-    get([Api.PATH_DETAILS + "/$id"], (response) {
+    api.getDetails(id, (shoeDetail) {
       showLoader(show: false);
-
-      if(response[0].statusCode == 200) {
-        var shoeDetail = convertResponseToDetailShoesItems(response[0].body);
-        navigatorService.navigateTo(RouteConstants.details, shoeDetail);
-      }
+      navigatorService.navigateTo(RouteConstants.details, shoeDetail);
     });
   }
 

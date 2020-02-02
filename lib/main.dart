@@ -3,6 +3,7 @@ import 'package:flutter_state_techcorner/model/shoe.dart';
 import 'package:flutter_state_techcorner/model/shoe_detail.dart';
 import 'package:flutter_state_techcorner/provider/home_notifier.dart';
 import 'package:flutter_state_techcorner/screen/detail.dart';
+import 'package:flutter_state_techcorner/service/api.dart';
 import 'package:flutter_state_techcorner/service/navigator_service.dart';
 import 'package:flutter_state_techcorner/utility/route_constants.dart';
 import 'package:provider/provider.dart';
@@ -42,10 +43,12 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  _setupDependencies(NavigatorService navigator) {
-    var provider = Provider.value(value: navigator);
+  _setupDependencies(NavigatorService navigatorService) {
+    var navigator = Provider.value(value: navigatorService);
+    var api = Provider.value(value: Api());
     return [
-      provider
+      navigator,
+      api
     ];
   }
 }
@@ -103,7 +106,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       color: Colors.white,
       child: ChangeNotifierProvider<HomeNotifier>(
-        create: (ctx) => HomeNotifier(navigatorService: Provider.of<NavigatorService>(ctx, listen: false)),
+        create: (ctx) => HomeNotifier(
+          navigatorService: Provider.of<NavigatorService>(ctx, listen: false),
+          api: Provider.of<Api>(ctx, listen: false),
+        ),
         child: HomeWidget(),
       ),
     );
