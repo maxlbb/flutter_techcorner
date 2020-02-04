@@ -13,7 +13,7 @@ class ItemCardWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailWidget(_itemCardModel)),
+          MaterialPageRoute(builder: (context) => DetailWidget(_itemCardModel.id)),
         );
       },
       child: Container(

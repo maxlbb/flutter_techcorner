@@ -4,7 +4,7 @@ import 'package:flutter_state_techcorner/blocs/shoes_bloc.dart';
 import 'package:flutter_state_techcorner/model/brand_states.dart';
 import 'package:flutter_state_techcorner/model/filter_event.dart';
 import 'package:flutter_state_techcorner/model/filter_status.dart';
-import 'package:flutter_state_techcorner/model/shoes_states.dart';
+import 'package:flutter_state_techcorner/model/shoes_list_states.dart';
 import 'package:flutter_state_techcorner/widget/item_card.dart';
 import 'package:flutter_state_techcorner/widget/item_filter.dart';
 
@@ -94,19 +94,21 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
               ),
               Expanded(
-                child: StreamBuilder<ShoesStates>(
+                child: StreamBuilder<ShoesListStates>(
                     stream: _shoesBloc.shoes,
                     builder: (context, snapshot) {
-                      if (snapshot.data is ShoesLoaded) {
-                        ShoesLoaded shoes = snapshot.data as ShoesLoaded;
+                      if (snapshot.data is ShoesListLoaded) {
+                        ShoesListLoaded shoes = snapshot.data as ShoesListLoaded;
                         return new ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: shoes.shoesList.length,
                             itemBuilder: (BuildContext listContext, int index) {
                               return new ItemCardWidget(shoes.shoesList[index]);
                             });
-                      } else if (snapshot.data is ShoesUninitialized) {
-                        return Text("Loading...");
+                      } else if (snapshot.data is ShoesListUninitialized) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
                       } else {
                         return Text("Error!");
                       }

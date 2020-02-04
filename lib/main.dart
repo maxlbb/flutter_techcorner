@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/blocs/bloc_provider.dart';
 import 'package:flutter_state_techcorner/blocs/shoes_bloc.dart';
+import 'package:flutter_state_techcorner/network/shoes_api_provider.dart';
 import 'screen/home.dart';
 
 void main() => runApp(MyApp());
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ShoesBloc>(
-      bloc: ShoesBloc(),
+      bloc: ShoesBloc(ShoesApiProvider()),
       child: MaterialApp(
         title: 'TechCorner',
         theme: ThemeData(
