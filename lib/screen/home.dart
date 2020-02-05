@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/blocs/bloc_provider.dart';
 import 'package:flutter_state_techcorner/blocs/shoes_bloc.dart';
-import 'package:flutter_state_techcorner/model/brand_states.dart';
-import 'package:flutter_state_techcorner/model/filter_event.dart';
+import 'package:flutter_state_techcorner/model/brand.dart';
 import 'package:flutter_state_techcorner/model/filter_status.dart';
-import 'package:flutter_state_techcorner/model/shoes_list_states.dart';
+import 'package:flutter_state_techcorner/model/shoe.dart';
 import 'package:flutter_state_techcorner/widget/item_card.dart';
 import 'package:flutter_state_techcorner/widget/item_filter.dart';
 
@@ -21,7 +20,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   void didChangeDependencies() {
     _shoesBloc = BlocProvider.of<ShoesBloc>(context);
-    _shoesBloc.fetchAll();
     super.didChangeDependencies();
   }
 
@@ -33,21 +31,19 @@ class _HomeWidgetState extends State<HomeWidget> {
           margin:
               EdgeInsets.only(left: 16.0, top: 8.0, right: 8.0, bottom: 8.0),
           height: 30.0,
-          child: StreamBuilder<BrandsStates>(
+          child: StreamBuilder<List<Brand>>(
               stream: _shoesBloc.brands,
               builder: (context, snapshot) {
-                if (snapshot.data is BrandsLoaded) {
-                  BrandsLoaded brands = snapshot.data as BrandsLoaded;
+                if (snapshot.hasData) {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: brands.brandsList.length,
+                    itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext listContext, int index) {
                       return GestureDetector(
-                        child: ItemFilterWidget(brands.brandsList[index].brand,
-                            selectedBrand == index),
+                        child: ItemFilterWidget(
+                            snapshot.data[index].brand, selectedBrand == index),
                         onTap: () {
-                          _shoesBloc.filterSink.add(
-                              BrandFilterEvent(brands.brandsList[index].brand));
+                          _shoesBloc.filterSink.add(snapshot.data[index]);
                           setState(() {
                             selectedBrand = index;
                           });
@@ -55,10 +51,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                       );
                     },
                   );
-                } else if (snapshot.data is BrandsUninitialized) {
-                  return Text("Loading...");
-                } else {
+                } else if (snapshot.hasError) {
                   return Text("Error!");
+                } else {
+                  return Text("Loading...");
                 }
               }),
         ),
@@ -82,8 +78,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                             StatusFilter.getStatusList[index].status,
                             selectedStatus == index),
                         onTap: () {
-                          _shoesBloc.filterSink.add(StatusFilterEvent(
-                              StatusFilter.getStatusList[index].status));
                           setState(() {
                             selectedStatus = index;
                           });
@@ -94,23 +88,22 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
               ),
               Expanded(
-                child: StreamBuilder<ShoesListStates>(
+                child: StreamBuilder<List<Shoe>>(
                     stream: _shoesBloc.shoes,
                     builder: (context, snapshot) {
-                      if (snapshot.data is ShoesListLoaded) {
-                        ShoesListLoaded shoes = snapshot.data as ShoesListLoaded;
+                      if (snapshot.hasData) {
                         return new ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: shoes.shoesList.length,
+                            itemCount: snapshot.data.length,
                             itemBuilder: (BuildContext listContext, int index) {
-                              return new ItemCardWidget(shoes.shoesList[index]);
+                              return new ItemCardWidget(snapshot.data[index]);
                             });
-                      } else if (snapshot.data is ShoesListUninitialized) {
+                      } else if (snapshot.hasError) {
+                        return Text("Error!");
+                      } else {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else {
-                        return Text("Error!");
                       }
                     }),
               ),

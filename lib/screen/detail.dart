@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_techcorner/Utility/round_button.dart';
 import 'package:flutter_state_techcorner/blocs/bloc_provider.dart';
 import 'package:flutter_state_techcorner/blocs/shoes_bloc.dart';
-import 'package:flutter_state_techcorner/model/shoe_states.dart';
+import 'package:flutter_state_techcorner/model/shoe.dart';
 import 'package:flutter_state_techcorner/widget/item_detail_card.dart';
 
 class DetailWidget extends StatefulWidget {
@@ -30,11 +30,10 @@ class _DetailWidgetState extends State<DetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ShoeStates>(
+    return StreamBuilder<Shoe>(
         stream: _shoesBloc.shoeDetails,
         builder: (context, snapshot) {
-          if (snapshot.data is ShoeLoaded) {
-            ShoeLoaded shoe = snapshot.data as ShoeLoaded;
+          if (snapshot.hasData) {
             return Scaffold(
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(80.0),
@@ -42,7 +41,7 @@ class _DetailWidgetState extends State<DetailWidget> {
                   backgroundColor: backgroundColor,
                   automaticallyImplyLeading: true,
                   elevation: 0,
-                  title: Text(shoe.shoeDetails.title,
+                  title: Text(snapshot.data.title,
                       style: TextStyle(color: Colors.white)),
                   actions: <Widget>[
                     RoundButton(
@@ -81,8 +80,8 @@ class _DetailWidgetState extends State<DetailWidget> {
                               width: 280.0,
                               child: Hero(
                                 transitionOnUserGestures: true,
-                                tag: 'shoe_image' + shoe.shoeDetails.id.toString(),
-                                child: Image.asset(shoe.shoeDetails.image),
+                                tag: 'shoe_image' + snapshot.data.id.toString(),
+                                child: Image.asset(snapshot.data.image),
                               ),
                             ),
                           ),
@@ -93,22 +92,22 @@ class _DetailWidgetState extends State<DetailWidget> {
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
                                   ItemDetailCard(
-                                    Image.asset(shoe.shoeDetails.image),
+                                    Image.asset(snapshot.data.image),
                                     backgroundColor: Colors.black12,
                                     isVideo: false,
                                   ),
                                   ItemDetailCard(
-                                    Image.asset(shoe.shoeDetails.image),
+                                    Image.asset(snapshot.data.image),
                                     backgroundColor: Colors.black12,
                                     isVideo: false,
                                   ),
                                   ItemDetailCard(
-                                    Image.asset(shoe.shoeDetails.image),
+                                    Image.asset(snapshot.data.image),
                                     backgroundColor: Colors.black12,
                                     isVideo: false,
                                   ),
                                   ItemDetailCard(
-                                    Image.asset(shoe.shoeDetails.image),
+                                    Image.asset(snapshot.data.image),
                                     backgroundColor: Colors.black12,
                                     isVideo: true,
                                   )
@@ -126,7 +125,7 @@ class _DetailWidgetState extends State<DetailWidget> {
                                           color: Colors.black, fontSize: 25),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: shoe.shoeDetails.model,
+                                            text: snapshot.data.model,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold)),
                                       ],
@@ -159,7 +158,7 @@ class _DetailWidgetState extends State<DetailWidget> {
                                                 color: Colors.black, fontSize: 25),
                                             children: <TextSpan>[
                                               TextSpan(
-                                                  text: shoe.shoeDetails.price
+                                                  text: snapshot.data.price
                                                       .toString(),
                                                   style: TextStyle(
                                                       fontWeight: FontWeight.bold)),
@@ -178,7 +177,7 @@ class _DetailWidgetState extends State<DetailWidget> {
                                 left: marginBorder,
                                 right: marginBorder,
                                 top: marginBorder),
-                            child: Text(shoe.shoeDetails.detail),
+                            child: Text(snapshot.data.detail),
                           ),
                           Padding(
                             padding: EdgeInsets.only(

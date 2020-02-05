@@ -2,27 +2,22 @@ import 'dart:async';
 
 import 'package:flutter_state_techcorner/blocs/bloc_base.dart';
 import 'package:flutter_state_techcorner/model/brand.dart';
-import 'package:flutter_state_techcorner/model/brand_states.dart';
-import 'package:flutter_state_techcorner/model/filter_event.dart';
 import 'package:flutter_state_techcorner/model/shoe.dart';
-import 'package:flutter_state_techcorner/model/shoe_states.dart';
-import 'package:flutter_state_techcorner/model/shoes_list_states.dart';
-import 'package:flutter_state_techcorner/network/shoes_repository.dart';
 
 class ShoesBloc implements BlocBase {
   //Streams
-  final _shoesController = StreamController<ShoesListStates>();
-  Stream<ShoesListStates> get shoes => _shoesController.stream;
+  final _shoesController = StreamController<List<Shoe>>();
+  Stream<List<Shoe>> get shoes => _shoesController.stream;
 
-  final _brandsController = StreamController<BrandsStates>();
-  Stream<BrandsStates> get brands => _brandsController.stream;
+  final _brandsController = StreamController<List<Brand>>();
+  Stream<List<Brand>> get brands => _brandsController.stream;
 
-  final _shoeDetailsController = StreamController<ShoeStates>.broadcast();
-  Stream<ShoeStates> get shoeDetails => _shoeDetailsController.stream;
+  final _shoeDetailsController = StreamController<Shoe>.broadcast();
+  Stream<Shoe> get shoeDetails => _shoeDetailsController.stream;
 
   //Sinks
-  final _filterController = StreamController<FilterEvent>();
-  Sink<FilterEvent> get filterSink => _filterController.sink;
+  final _filterController = StreamController<Brand>();
+  Sink<Brand> get filterSink => _filterController.sink;
 
   //TEMP
   List<Shoe> _shoesList = new List();
@@ -32,48 +27,43 @@ class ShoesBloc implements BlocBase {
   final _shoesRepository;
 
   ShoesBloc(this._shoesRepository) {
-    _shoesController.add(ShoesListUninitialized());
-    _brandsController.add(BrandsUninitialized());
-    _shoeDetailsController.add(ShoeUninitialized());
     _filterController.stream.listen(_filterShoes);
+    fetchAll();
   }
 
   void fetchAll() async {
     try {
       _shoesList = await _shoesRepository.fetchShoes();
-      _shoesController.add(ShoesListLoaded(_shoesList));
+      _shoesController.add(_shoesList);
     } catch (e) {
-      _shoesController.add(ShoesListError());
+      _shoesController.addError(e);
     }
 
     try {
       _brandsList = await _shoesRepository.fetchBrands();
-      _brandsController.add(BrandsLoaded(_brandsList));
+      _brandsController.add(_brandsList);
     } catch (e) {
-      _brandsController.add(BrandsError());
+      _brandsController.addError(e);
     }
   }
 
   void fetchShoeDetail(int id) async {
-    _shoeDetailsController.add(ShoeUninitialized());
     try {
       Shoe shoe = await _shoesRepository.fetchShoeDetails(id);
-      _shoeDetailsController.add(ShoeLoaded(shoe));
+      _shoeDetailsController.add(shoe);
     } catch (e) {
-      _shoeDetailsController.add(ShoeError());
+      _shoeDetailsController.addError(e);
     }
   }
 
-  void _filterShoes(FilterEvent event) {
-    if (event is BrandFilterEvent) {
-      if (event.brand != "ALL") {
-        List<Shoe> temp =
-            _shoesList.where((shoe) => shoe.brand == event.brand).toList();
-        _shoesController.add(ShoesListLoaded(temp));
-      } else {
-        _shoesController.add(ShoesListLoaded(_shoesList));
-      }
-    } else if (event is StatusFilterEvent) {}
+  void _filterShoes(Brand filter) {
+    if (filter.brand != "ALL") {
+      List<Shoe> temp =
+          _shoesList.where((shoe) => shoe.brand == filter.brand).toList();
+      _shoesController.add(temp);
+    } else {
+      _shoesController.add(_shoesList);
+    }
   }
 
   @override
